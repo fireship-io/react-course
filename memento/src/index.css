@@ -1,0 +1,157 @@
+/* Tip: If you see an "Unknown at rule @import-normalize css(unknownAtRules)"
+warning in VSCode,change the css.lint.unknownAtRules setting to ignore. */
+@import-normalize;
+
+:root {
+  --text: #f66936;
+  --card: #202426;
+  --orange: #ffa200;
+  --bg: linear-gradient(135deg, #fc2473, #f66936);
+
+  --delay: 200ms;
+  --rotate-0: rotateY(0deg);
+  --rotate-90: rotateY(90deg);
+  --transition: all ease-in 200ms;
+
+  --radius: 0.75rem;
+  --shadow: 1px 1px 13px #03030390;
+
+  --card-width: 150px;
+  --card-width-mobile: 20vw;
+  --card-enter: enter 600ms ease;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    sans-serif;
+
+  font-size: 1rem;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  padding: 1rem;
+  display: flex;
+  overflow: auto;
+  color: var(--text);
+  background: var(--bg);
+  align-items: flex-start;
+  justify-content: center;
+  font-family: var(--font-family);
+}
+
+/* ========= Menu ======================== */
+header {
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  padding: 0.5rem;
+  align-items: center;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  animation: var(--card-enter);
+  justify-content: space-evenly;
+}
+h3 {
+  margin: auto;
+  color: var(--text);
+}
+h4 {
+  margin: auto;
+  color: var(--orange);
+}
+button {
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: auto;
+}
+
+/* ========= Grid ========================= */
+.grid {
+  gap: 1.25rem;
+  display: grid;
+  margin: 3rem auto;
+  grid-template-columns: repeat(4, auto);
+}
+
+/* ========= Card ========================= */
+.card {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  width: var(--card-width);
+  animation: var(--card-enter);
+  border-radius: var(--radius);
+}
+.card img {
+  width: 100%;
+}
+.card-face,
+.card-back {
+  padding: 1rem;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+.card-face {
+  position: absolute;
+  transform: var(--rotate-90);
+}
+.card-back {
+  transform: var(--rotate-0);
+  transition-delay: var(--delay);
+}
+.selected .card-face {
+  transform: var(--rotate-0);
+  transition-delay: var(--delay);
+}
+.selected .card-back {
+  transform: var(--rotate-90);
+  transition-delay: 0s;
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========= Mobile ===================== */
+@media screen and (max-width: 720px) {
+  body {
+    align-items: center;
+  }
+
+  header {
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    position: fixed;
+    border-radius: 0;
+  }
+
+  .grid {
+    margin: auto auto 3rem auto;
+  }
+
+  .card {
+    width: var(--card-width-mobile);
+  }
+}
