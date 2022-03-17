@@ -2,28 +2,11 @@ import { useState, useEffect } from 'react';
 import Card from './components/Card';
 import Header from './components/Header';
 import useAppBadge from './hooks/useAppBadge';
-import shuffleArray from './utilities/shuffleArray';
-
-const assets = [
-  { image: '/assets/css.png', matched: false },
-  { image: '/assets/html5.png', matched: false },
-  {
-    image: '/assets/jquery.png',
-    matched: false,
-  },
-  { image: '/assets/js.png', matched: false },
-  { image: '/assets/next.png', matched: false },
-  { image: '/assets/node.png', matched: false },
-  {
-    image: '/assets/react.png',
-    matched: false,
-  },
-  { image: '/assets/ts.png', matched: false },
-];
+import shuffle from './utilities/shuffle';
 
 function App() {
   const [wins, setWins] = useState(0); // Win streak
-  const [cards, setCards] = useState([]); // Cards array from assets
+  const [cards, setCards] = useState(shuffle); // Cards array from assets
   const [pickOne, setPickOne] = useState(null); // First selection
   const [pickTwo, setPickTwo] = useState(null); // Second selection
   const [disabled, setDisabled] = useState(false); // Delay handler
@@ -31,7 +14,9 @@ function App() {
 
   // Handle card selection
   const handleClick = (card) => {
-    pickOne ? setPickTwo(card) : setPickOne(card);
+    if (!disabled) {
+      pickOne ? setPickTwo(card) : setPickOne(card);
+    }
   };
 
   const handleTurn = () => {
@@ -45,7 +30,7 @@ function App() {
     setWins(0);
     clearBadge();
     handleTurn();
-    setCards(() => shuffleArray(assets));
+    setCards(shuffle);
   };
 
   // Used for selection and match handling
@@ -83,17 +68,11 @@ function App() {
     };
   }, [cards, pickOne, pickTwo, setBadge, wins]);
 
-  // Initialize the game on load
-  useEffect(() => {
-    handleTurn();
-    // Shuffle cards
-    setCards(() => shuffleArray(assets));
-  }, []);
 
   // If player has found all matches, handle accordingly
   useEffect(() => {
     // Check for any remaining card matches
-    const checkWin = cards.filter((card) => card.matched === false);
+    const checkWin = cards.filter((card) => !card.matched);
 
     // All matches made, handle win/badge counters
     if (cards.length && checkWin.length < 1) {
@@ -101,7 +80,7 @@ function App() {
       setWins(wins + 1);
       setBadge();
       handleTurn();
-      setCards(() => shuffleArray(assets));
+      setCards(shuffle);
     }
   }, [cards, setBadge, wins]);
 
@@ -111,15 +90,14 @@ function App() {
       <div className="grid">
         {cards.map((card) => {
           // Destructured card properties
-          const { id, image, matched } = card;
+          const { image, matched } = card;
 
           return (
             <Card
-              key={id}
+              key={image.id}
               card={card}
               image={image}
-              disabled={disabled}
-              onClick={handleClick}
+              onClick={() => handleClick(card)}
               selected={card === pickOne || card === pickTwo || matched}
             />
           );

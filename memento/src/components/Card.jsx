@@ -1,7 +1,5 @@
-const Card = ({ card, image, selected, disabled, onClick }) => {
-  const handleSelection = () => {
-    !disabled && onClick(card);
-  };
+const Card = ({ image, selected, onClick }) => {
+
 
   return (
     <div className="card">
@@ -12,7 +10,7 @@ const Card = ({ card, image, selected, disabled, onClick }) => {
           alt=""
           className="card-back"
           src={'/assets/fireship.png'}
-          onClick={handleSelection}
+          onClick={onClick}
         />
       </div>
     </div>
