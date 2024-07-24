@@ -14,7 +14,7 @@ function App() {
 
   // Handle card selection
   const handleClick = (card) => {
-    if (!disabled) {
+    if (!disabled && card !== pickOne && !card.matched) {
       pickOne ? setPickTwo(card) : setPickOne(card);
     }
   };
